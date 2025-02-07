@@ -1,0 +1,81 @@
+body {
+    background-color: black;
+    margin: 1%;
+}
+
+input[type="number"] {
+    text-align: right;
+}
+
+table {
+    border: 1px solid #FFFFFF;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    padding: 5px;
+    color: #FFFFFF;
+}
+
+th,
+td {
+    border: 1px solid white;
+    padding: 5px;
+    width: 11.11%;
+}
+
+th {
+    text-align: center;
+}
+
+
+.box {
+    border: 1px white solid;
+    border-radius: 20px;
+}
+
+.tab-content {
+    display: none;
+    /* Escondemos todas las secciones por defecto */
+}
+
+.tab-content.active {
+    display: block;
+    /* Solo mostramos la sección activa */
+}
+
+.tab-links.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.section-title {
+    font-weight: bold;
+    color: red;
+    margin-top: 20px;
+}
+
+.highlight {
+    font-weight: bold;
+    color: red;
+}
+
+.center {
+    text-align: center;
+}
+
+.total {
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+
+.input-moneda {
+    padding-left: 20px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><text x="0" y="15" font-size="16" fill="black">$</text></svg>');
+    background-repeat: no-repeat;
+    background-position: 5px center;
+}
+
+
+
+#calcular {
+    margin-top: auto;
+}

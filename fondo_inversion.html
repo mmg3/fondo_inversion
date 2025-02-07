@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/local.css">
+    <title>Fondo de Inversión - GRUPO CONFIA</title>
+</head>
+
+<body>
+    <img alt="GRUPO CONFIA" src="./images/icon-aig-logo-white.png" width="10%" />
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="tabDatos" data-target="sectionDatos" aria-current="page" href="#">DATOS</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabCostos" data-target="sectionCostos" aria-current="page" href="#">COSTOS</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabIndividual" data-target="sectionIndividual" aria-current="page" href="#">TABLA
+                INDIVIDUAL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabGrupal" data-target="sectionGrupal" aria-current="page" href="#">TABLA GRUPAL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabPromocional" data-target="sectionPromocional" aria-current="page" href="#">TABLA
+                PROMOCIONAL</a>
+        </li>
+    </ul>
+    <section id="sectionDatos" class="container-fluid mt-5 tab-content active">
+        <div class="row">
+            <div class="col-md-3 text-white p-3 box">
+                <div class="mb-3">
+                    <label for="periodoContribucion" class="form-label">Período de Contribución</label>
+                    <input type="number" class="form-control" id="periodoContribucion" placeholder="1">
+                </div>
+                <div class="mb-3">
+                    <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                    <input type="text" id="fechaInicio" class="form-control text-end" placeholder="Elija una fecha">
+                </div>
+            </div>
+            <div class="col-md-3 text-white p-3 box">
+                <div class="mb-1">
+                    <div class="text-center">
+                        <label class="form-label">Sociedad de Inversión</label><br />
+                        <label class="form-label">Entradas</label>
+                    </div>
+                    <div class="mb-1">
+                        <label for="montoContribucion" class="col-form-label">Monto contribución:</label>
+                        <input type="number" id="montoContribucion" class="form-control input-decimal"
+                            placeholder="200">
+                    </div>
+                    <div class="mb-1">
+                        <label for="pagoInicial" class="col-form-label">Pago Inicial(PI):</label>
+                        <input type="number" id="pagoInicial" class="form-control input-decimal" placeholder="0">
+                    </div>
+                    <div class="mb-1">
+                        <label for="numeroContribuyentes" class="col-form-label">Número de contribuyentes:</label>
+                        <input type="number" id="numeroContribuyentes" class="form-control" placeholder="5000">
+                    </div>
+                    <div class="mb-1">
+                        <label for="contribucionMensual" class="col-form-label">Contribución mensual:</label>
+                        <input type="text" id="contribucionMensual" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                    <div class="mb-1">
+                        <label for="contribucionTotal" class="col-form-label">Contribución Total:</label>
+                        <input type="text" id="contribucionTotal" class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-white p-3 box">
+                <div class="mb-1">
+                    <div class="text-center">
+                        <label class="form-label">Operadores de la<br />Sociedad de Inversión</label><br />
+                        <label class="form-label">Beneficios</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tasaNominalAnual" class="col-form-label">Tasa Nominal Anual:</label>
+                        <input type="number" id="tasaNominalAnual" class="form-control input-decimal" placeholder="2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-white p-3 box">
+                <div class="mb-1">
+                    <div class="text-center">
+                        <label class="form-label">Edad</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edadInicial" class="col-form-label">Edad Inicial:</label>
+                        <input type="number" id="edadInicial" class="form-control" placeholder="35">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edadFinal" class="col-form-label">Edad final:</label>
+                        <input type="number" id="edadFinal" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3 d-grid gap-2">
+                        <button type="button" class="btn btn-success" id="calcular">Calcular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sectionCostos" class="container-fluid mt-5 tab-content">
+        <div class="row mb-3">
+            <div class="col-6">
+                <button type="button" class="btn btn-success" id="agregarCosto">Agregar Costo</button>
+                <table id="tablaCostos">
+                    <thead>
+                        <tr>
+                            <th>Costos Operación</th>
+                            <th>%</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaBody">
+                        <tr>
+                            <td><input type="text" class="form-control input-text"
+                                    placeholder="Póliza de vida y seguros afines"></td>
+                            <td><input type="number" class="form-control input-decimal text-end porcentaje"
+                                    id="porcentajeCosto1" onblur="calcularValor(this)"></td>
+                            <td><input type="number" class="form-control input-decimal text-end valorTotal"
+                                    id="valorCosto1" readonly></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="totales">
+                            <td>Totales</td>
+                            <td><input type="text" id="porcentajeCostoTotal" class="form-control input-decimal text-end"
+                                    readonly></td>
+                            <td><input type="text" id="valorCostoTotal" class="form-control input-decimal text-end"
+                                    readonly></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-success invisible" id="agregarCosto">Agregar Costo</button>
+                <table class="rendimiento">
+                    <tr>
+                        <th class="highlight">Rendimiento Operador (%)</th>
+                        <td class="highlight"><input type="text" id="porcentajeRendimientoOperador"
+                                class="form-control input-decimal text-end"></td>
+                    </tr>
+                </table>
+            </div>
+    </section>
+
+    <div id="sectionIndividual" class="container mt-5 tab-content">
+        <div class="row">
+            <div class="text-white p-3 box w-50 mb-3">
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="periodoContribucionIndividual" class="col-form-label">Período de
+                            Contribución:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="periodoContribucionIndividual"
+                            class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="montoContribucionIndividual" class="col-form-label">Monto contribución:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="montoContribucionIndividual" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="numeroContribuyentesIndividual" class="col-form-label">Número de
+                            contribuyentes:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="numeroContribuyentesIndividual"
+                            class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="contribucionTotalMesIndividual" class="col-form-label">Contribución
+                            Total(mes):</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="contribucionTotalMesIndividual"
+                            class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="pagoInicialIndividual" class="col-form-label">Pago Inicial(PI):</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="pagoInicialIndividual" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="tasaNominalAnualIndividual" class="col-form-label">Tasa Nominal Anual:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="tasaNominalAnualIndividual" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="fechaInicioIndividual" class="col-form-label">Fecha Inicio:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="fechaInicioIndividual" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-white p-3 box w-50 mb-3">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Total Contribuido</th>
+                            <th>Total Costos Operación</th>
+                            <th>Total Rendimiento Operador</th>
+                            <th>Interés Total</th>
+                            <th>Acumulado en Cuenta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaIndividualTotales">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row align-items-center mb-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Edad <small>(Cuando aplique)</small></th>
+                        <th>Contribución<br>Mensual</th>
+                        <th>Contribución<br>Acumulada</th>
+                        <th>Costos<br>Operación</th>
+                        <th>Rendimiento<br>Operador</th>
+                        <th>C<sub>o</sub></th>
+                        <th>C<sub>f</sub></th>
+                        <th>i</th>
+                        <th>&nbsp;</th>
+                        <th>Año</th>
+                        <th>Total Contribuído</th>
+                        <th>Total Costos Operación</th>
+                        <th>Total Rendimiento Operador</th>
+                        <th>Interés Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaIndividual">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="sectionGrupal" class="container-fluid mt-5 tab-content">
+        <div class="row">
+            <div class="text-white p-3 box w-50 mb-3">
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="periodoContribucionGrupal" class="col-form-label">Período de
+                            Contribución:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="periodoContribucionGrupal" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="montoContribucionGrupal" class="col-form-label">Monto contribución:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="montoContribucionGrupal" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="numeroContribuyentesGrupal" class="col-form-label">Número de
+                            contribuyentes:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="numeroContribuyentesGrupal" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="contribucionTotalMesGrupal" class="col-form-label">Contribución
+                            Total(mes):</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="contribucionTotalMesGrupal" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="pagoInicialGrupal" class="col-form-label">Pago Inicial(PI):</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="pagoInicialGrupal" class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="tasaNominalAnualGrupal" class="col-form-label">Tasa Nominal Anual:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="tasaNominalAnualGrupal" class="form-control input-decimal text-end"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="fechaInicioGrupal" class="col-form-label">Fecha Inicio:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="fechaInicioGrupal" class="form-control input-decimal text-end" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-white p-3 box w-50 mb-3">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Total Contribuido</th>
+                            <th>Total Costos Operación</th>
+                            <th>Total Rendimiento Operador</th>
+                            <th>Interés Total</th>
+                            <th>Acumulado en Cuenta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaGrupalTotales">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row align-items-center mb-3">
+            <table>
+                <caption>tabla 1</caption>
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Edad <small>(Cuando aplique)</small></th>
+                        <th>Contribución<br>Mensual</th>
+                        <th>Contribución<br>Acumulada</th>
+                        <th>Costos<br>Operación</th>
+                        <th>Rendimiento<br>Operador</th>
+                        <th>C<sub>o</sub></th>
+                        <th>C<sub>f</sub></th>
+                        <th>i</th>
+                        <th>&nbsp;</th>
+                        <th>Año</th>
+                        <th>Total Contribuído</th>
+                        <th>Total Costos Operación</th>
+                        <th>Total Rendimiento Operador</th>
+                        <th>Interés Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaGrupal">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="sectionPromocional" class="container-fluid mt-5 tab-content">
+        <div class="row mb-3">
+            <div class="col-6">
+                <h2 class="section-title">Red de Beneficios</h2>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Valores actuales</th>
+                        <th>%</th>
+                        <th>Tangible aprox.</th>
+                    </tr>
+                    <tr>
+                        <td>Descuento en pasajes</td>
+                        <td><input type="number" id="valorPasajesIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="number" id="porcentajePasajesIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoPasajesIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Tour</td>
+                        <td><input type="number" id="valorTourIndividual" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="number" id="porcentajeTourIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoTourIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Hospedaje</td>
+                        <td><input type="number" id="valorHospedajeIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="number" id="porcentajeHospedajeIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoHospedajeIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Alimentación (cenas)</td>
+                        <td><input type="number" id="valorCenaIndividual" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="number" id="porcentajeCenaIndividual"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoCenaIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="total highlight center">Total Red Beneficios</td>
+                        <td><input type="number" id="totalRedBeneficiosIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col">
+                <h2 class="section-title">Cálculo Individual</h2>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Período de Contribución (meses)</td>
+                        <td><input type="text" id="periodoContribucionPromocionalIndividual"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Monto de Contribución</td>
+                        <td><input type="text" id="montoContribucionPromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Pago Inicial (Pi)</td>
+                        <td><input type="text" id="pagoInicialPromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Tasa Nominal Anual</td>
+                        <td><input type="text" id="tasaNominalAnualPromocionalIndividual"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Fecha de inicio</td>
+                        <td><input type="text" id="fechaInicioPromocionalIndividual"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Contribución Total</td>
+                        <td><input type="text" id="contribucionTotalPromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Rendimiento</td>
+                        <td><input type="text" id="rendimientoPromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Acumulado en cuenta</td>
+                        <td><input type="text" id="acumuladoEnCuentaPromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr>
+                        <td class="highlight total center">Total Red Beneficios</td>
+                        <td><input type="text" id="totalRedBeneficiosPromocionalIndividualCopia"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight total center">Rendimiento Total Cliente</td>
+                        <td><input type="text" id="rendimientoTotalClientePromocionalIndividual"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <h2 class="section-title">Red de Beneficios (Valores Unitarios)</h2>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Valores actuales</th>
+                        <th>%</th>
+                        <th>Tangible aprox.</th>
+                    </tr>
+                    <tr>
+                        <td>Descuento en pasajes</td>
+                        <td><input type="number" id="valorPasajesGrupal" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="number" id="porcentajePasajesGrupal"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoPasajesGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Tour</td>
+                        <td><input type="number" id="valorTourGrupal" class="form-control input-decimal text-end"></td>
+                        <td><input type="number" id="porcentajeTourGrupal" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="text" id="descuentoTourGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Hospedaje</td>
+                        <td><input type="number" id="valorHospedajeGrupal" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="number" id="porcentajeHospedajeGrupal"
+                                class="form-control input-decimal text-end"></td>
+                        <td><input type="text" id="descuentoHospedajeGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Alimentación (cenas)</td>
+                        <td><input type="number" id="valorCenaGrupal" class="form-control input-decimal text-end"></td>
+                        <td><input type="number" id="porcentajeCenaGrupal" class="form-control input-decimal text-end">
+                        </td>
+                        <td><input type="text" id="descuentoCenaGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="total highlight center">Total Red Beneficios</td>
+                        <td><input type="number" id="totalRedBeneficiosGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="highlight total center">Total Red Beneficios Grupo</td>
+                        <td><input type="text" id="totalRedBeneficiosGrupoGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col">
+                <h2 class="section-title">Cálculo Grupal</h2>
+                <table>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Período de Contribución (meses)</td>
+                        <td><input type="text" id="periodoContribucionPromocionalGrupal"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Monto de Contribución</td>
+                        <td><input type="text" id="montoContribucionPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Pago Inicial (Pi)</td>
+                        <td><input type="text" id="pagoInicialPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Número de contribuyentes</td>
+                        <td><input type="text" id="numeroContribuyentesPromocionGrupal"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Tasa Nominal Anual</td>
+                        <td><input type="text" id="tasaNominalAnualPromocionalGrupal"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Fecha de inicio</td>
+                        <td><input type="text" id="fechaInicioPromocionalGrupal"
+                                class="form-control input-decimal text-end" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Contribución Mensual</td>
+                        <td><input type="text" id="contribucionMensualPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Contribución Total</td>
+                        <td><input type="text" id="contribucionTotalPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Rendimiento</td>
+                        <td><input type="text" id="rendimientoPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Acumulado en cuenta</td>
+                        <td><input type="text" id="acumuladoEnCuentaPromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+                <br />
+                <table>
+                    <tr>
+                        <td class="highlight total center">Total Red Beneficios</td>
+                        <td><input type="text" id="totalRedBeneficiosPromocionalGrupalCopia"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="highlight total center">Rendimiento Total Cliente</td>
+                        <td><input type="text" id="rendimientoTotalClientePromocionalGrupal"
+                                class="form-control input-decimal text-end input-moneda" readonly></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- Inicializar Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="./js/scripts.js"></script>
+    <script>
+        flatpickr("#datepicker", {
+            dateFormat: "d/m/Y",
+            locale: "es"
+        });
+    </script>
+</body>
+
+</html>
