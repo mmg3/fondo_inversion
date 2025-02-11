@@ -144,12 +144,12 @@
                 </table>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-success invisible" id="agregarCosto">Agregar Costo</button>
+                <button type="button" class="btn btn-success invisible" id="agregarCostoVoid">Agregar Costo</button>
                 <table class="rendimiento">
                     <tr>
                         <th class="highlight">Rendimiento Operador (%)</th>
                         <td class="highlight"><input type="text" id="porcentajeRendimientoOperador"
-                                class="form-control input-decimal text-end"></td>
+                                class="form-control input-decimal text-end" onblur="recalcularRendimientoOperador(this)"></td>
                     </tr>
                 </table>
             </div>
@@ -652,9 +652,10 @@
 
     <!-- Inicializar Flatpickr -->
     <script src="./js/flatpickr.js"></script>
+    <script src="./js/flatpickr_es.js"></script>
     <script src="./js/scripts.js"></script>
     <script>
-        flatpickr("#datepicker", {
+        flatpickr("#fechaInicio", {
             dateFormat: "d/m/Y",
             locale: "es"
         });

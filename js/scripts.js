@@ -1,19 +1,22 @@
-//inicializaciones
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.nav-link');
     const tabContents = document.querySelectorAll('.tab-content');
 
-    // Añadir un evento de clic a cada botón
     buttons.forEach(button => {
         button.addEventListener('click', function () {
-            // Eliminar la clase "active" de todos los botones
+            
             buttons.forEach(b => b.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // Agregar la clase "active" al botón que se hizo clic
             button.classList.add('active');
             const targetSection = document.getElementById(button.getAttribute('data-target'));
             targetSection.classList.add('active');
+        });
+    });
+
+    document.querySelectorAll("input, textarea").forEach(element => {
+        element.addEventListener("focus", function() {
+            this.select();
         });
     });
 
@@ -51,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
     decimalesYFormato();
 });
 
-//funciones
 document.getElementById('calcular').addEventListener('click', function (event) {
     event.preventDefault();
 
@@ -79,15 +81,6 @@ const calcularClick = () => {
     porcentajeRendimientoOperador.value = 0.50;
 
     actualizarTotales();
-
-    copiarInfoIndividual();
-    copiarInfoGrupal();
-    //decimalesYFormato();
-
-    generarTablaIndividual();
-    generarTablaGrupal();
-    decimalesYFormato();
-    formatoNumerico();
 }
 
 document.getElementById('agregarCosto').addEventListener('click', function (event) {
@@ -112,6 +105,11 @@ const agregarFila = (nombreTabla) => {
             `;
 
     tbody.appendChild(nuevaFila);
+}
+
+const recalcularRendimientoOperador = () => {
+    actualizarTotales();
+    decimalesYFormato();
 }
 
 const calcularValor = (input) => {
@@ -147,6 +145,14 @@ const actualizarTotales = () => {
     // Actualizar los valores en la fila "Totales"
     document.getElementById("porcentajeCostoTotal").value = totalPorcentaje.toFixed(2) + "%";
     document.getElementById("valorCostoTotal").value = totalValor.toFixed(2);
+
+    copiarInfoIndividual();
+    copiarInfoGrupal();
+
+    generarTablaIndividual();
+    generarTablaGrupal();
+    decimalesYFormato();
+    formatoNumerico();
 }
 
 const copiarInfoIndividual = () => {
@@ -664,7 +670,7 @@ const formatoNumerico = () => {
         let numero = parseFloat(td.innerText.replace(",", "."));
         
         if (!isNaN(numero)) {
-            td.innerText = "$ " + new Intl.NumberFormat("es-ES", {
+            td.innerText = new Intl.NumberFormat("es-ES", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             }).format(numero);

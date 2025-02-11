@@ -76,13 +76,6 @@ th {
     background-color: #f2f2f2;
 }
 
-.input-moneda {
-    padding-left: 20px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><text x="0" y="15" font-size="16" fill="black">$</text></svg>');
-    background-repeat: no-repeat;
-    background-position: 5px center;
-}
-
 .w-40 { width: 40% !important; }
 .w-60 { width: 60% !important; }
 
