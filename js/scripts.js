@@ -73,7 +73,7 @@ const calcularClick = () => {
     edadFinal.value = Number(edadInicial.value) + (periodoContribucion.value / 12);
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
-    porcentajeCosto1.value = 5;
+    porcentajeCosto1.value = 1.20;
     let valorCosto1 = document.getElementById("valorCosto1");
     valorCosto1.value = (porcentajeCosto1.value / 100) * contribucionTotal.value;
 
