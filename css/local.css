@@ -1,5 +1,9 @@
+* {
+    color: black !important;
+}
+
 body {
-    background-color: black;
+    background-color: white;
     margin: 1%;
 }
 
@@ -8,16 +12,16 @@ input[type="number"] {
 }
 
 table {
-    border: 1px solid #FFFFFF;
+    border: 1px solid #000;
     border-collapse: collapse;
     border-spacing: 1px;
     padding: 5px;
-    color: #FFFFFF;
+    color: #000;
 }
 
 th,
 td {
-    border: 1px solid white;
+    border: 1px solid black;
     padding: 5px;
     width: 11.11%;
 }
@@ -28,7 +32,7 @@ th {
 
 
 .box {
-    border: 1px white solid;
+    border: 1px black solid;
     border-radius: 20px;
 }
 
@@ -44,18 +48,23 @@ th {
 
 .tab-links.active {
     background-color: #4CAF50;
-    color: white;
+    color: black;
 }
 
 .section-title {
     font-weight: bold;
-    color: red;
+    color: black;
     margin-top: 20px;
 }
 
 .highlight {
     font-weight: bold;
-    color: red;
+    color: wblackhite;
+}
+
+.highlightBlack {
+    font-weight: bold;
+    color: black !important;
 }
 
 .center {
@@ -74,7 +83,8 @@ th {
     background-position: 5px center;
 }
 
-
+.w-40 { width: 40% !important; }
+.w-60 { width: 60% !important; }
 
 #calcular {
     margin-top: auto;

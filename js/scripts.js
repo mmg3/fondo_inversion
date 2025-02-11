@@ -65,7 +65,7 @@ const calcularClick = () => {
     contribucionMensual.value = montoContribucion.value * numeroContribuyentes.value;
 
     let contribucionTotal = document.getElementById("contribucionTotal");
-    contribucionTotal.value = ((montoContribucion.value * periodoContribucion.value) + pagoInicial.value) * numeroContribuyentes.value;
+    contribucionTotal.value = ((montoContribucion.value * periodoContribucion.value) + Number(pagoInicial.value)) * numeroContribuyentes.value;
 
     let edadFinal = document.getElementById("edadFinal");
     edadFinal.value = Number(edadInicial.value) + (periodoContribucion.value / 12);
@@ -82,12 +82,12 @@ const calcularClick = () => {
 
     copiarInfoIndividual();
     copiarInfoGrupal();
-    decimalesYFormato();
+    //decimalesYFormato();
 
     generarTablaIndividual();
     generarTablaGrupal();
-
-
+    decimalesYFormato();
+    formatoNumerico();
 }
 
 document.getElementById('agregarCosto').addEventListener('click', function (event) {
@@ -106,9 +106,9 @@ const agregarFila = (nombreTabla) => {
 
     let nuevaFila = document.createElement("tr");
     nuevaFila.innerHTML = `
-                <td><input type="text" class="form-control input-text" value="Nombre Costo"></td>
-                <td><input type="number" class="form-control input-decimal text-end porcentaje" onblur="calcularValor(this)"></td>
-                <td><input type="text" class="form-control input-decimal text-end valorTotal" readonly></td>
+                <td><input type="text" class="form-control input-text formato-monto" value="Nombre Costo"></td>
+                <td><input type="number" class="form-control input-decimal text-end porcentaje formato-monto" onblur="calcularValor(this)"></td>
+                <td><input type="text" class="form-control input-decimal text-end valorTotal formato-monto" readonly></td>
             `;
 
     tbody.appendChild(nuevaFila);
@@ -125,8 +125,9 @@ const calcularValor = (input) => {
     let fila = input.closest("tr");
     let inputValorTotal = fila.querySelector(".valorTotal");
 
-    inputValorTotal.value = valorTotal;
+    inputValorTotal.value = parseFloat(valorTotal);
     actualizarTotales();
+    decimalesYFormato();
 }
 
 const actualizarTotales = () => {
@@ -259,7 +260,7 @@ const decimalesYFormato = () => {
     document.querySelectorAll('.input-decimal').forEach(input => {
         const ajustarDecimales = () => {
             if (input.value && !isNaN(input.value)) {
-                const numero = parseFloat(input.value).toFixed(2);
+                const numero = input.value;
                 input.value = numero;
 
                 if (input.type === 'text') {
@@ -289,13 +290,13 @@ const generarTablaIndividual = () => {
 
     let porcentajeCostoTotal = document.getElementById("porcentajeCostoTotal");
     const costoOperacionTotal = parseFloat(porcentajeCostoTotal.value) / 100;
-    
+
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
-    const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(/\./g, '').replace(',', '.'));
+    const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(',', '.'));
     const rendimientoOperadorTotal = porcentajeRendimientoOperadorNumero / 100.00;
-    
+
     let costoOperacion = Number(costoOperacionTotal) * Number(montoContribucion.value);
-    let rendimientoOperador = rendimientoOperadorTotal * Number(montoContribucion.value);
+    let rendimientoOperador = rendimientoOperadorTotal * parseFloat(montoContribucion.value);
 
     for (let i = 1; i <= periodoContribucion.value; i++) {
         edadActual = Math.floor(Number(edadInicial.value) + ((i - 1) / 12));
@@ -307,9 +308,9 @@ const generarTablaIndividual = () => {
         edadAnterior = edadActual;
 
         if (i === 1) {
-            contribucionAcumulada = (Number(montoContribucion.value) + Number(pagoInicial.value)).toFixed(2);
+            contribucionAcumulada = (parseFloat(montoContribucion.value) + parseFloat(pagoInicial.value)).toFixed(2);
         }
-
+        
         let c0 = contribucionAcumulada - costoOperacion - rendimientoOperador;
         let cf = c0 * (1 + (tasaNominalAnual.value / 100)) ** (1 / 12);
         let interes = cf - c0;
@@ -335,7 +336,7 @@ const generarTablaIndividual = () => {
 
         sumaInteresesIndividual += interes;
         const interesTotales = (i % 12 === 1)
-            ? `<td style="text-align: center" rowspan="12" id="valAnio${(edadActual + 1) - edadInicial.value}">0</td>`
+            ? `<td style="text-align: center" rowspan="12" id="valAnio${(edadActual + 1) - edadInicial.value}" class="formato-monto">0</td>`
             : "";
 
         if (i % 12 === 0) {
@@ -347,13 +348,13 @@ const generarTablaIndividual = () => {
             <tr>
                 <td style = "text-align: center">${i}</td>
                 ${filaEdad}
-                <td style = "text-align: right">${contribucionTotalMesIndividual.value}</td>
-                <td style = "text-align: right">${contribucionAcumulada}</td>
-                <td style = "text-align: right">${costoOperacion.toFixed(2)}</td>
-                <td style = "text-align: right">${rendimientoOperador.toFixed(2)}</td>
-                <td style = "text-align: right">${c0.toFixed(2)}</td>
-                <td style = "text-align: right">${cf.toFixed(2)}</td>
-                <td style = "text-align: right">${interes.toFixed(2)}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionTotalMesIndividual.value}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionAcumulada}</td>
+                <td style = "text-align: right" class="formato-monto">${costoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${rendimientoOperador}</td>
+                <td style = "text-align: right" class="formato-monto">${c0}</td>
+                <td style = "text-align: right" class="formato-monto">${cf}</td>
+                <td style = "text-align: right" class="formato-monto">${interes}</td>
                 ${columnaVacia}
                 ${anioCalculo}
                 ${contribucionTotales}
@@ -385,11 +386,11 @@ const generarTablaIndividual = () => {
     filaTotalesIndividual += `
             <tr>
                 <td style = "text-align: center">Totales</td>
-                <td style = "text-align: right">$ ${totalContribucionesIndividual}</td>
-                <td style = "text-align: right">$ ${totalesCostoOperacion}</td>
-                <td style = "text-align: right">$ ${totalesrendimientoOperador}</td>
-                <td style = "text-align: right">$ ${sumaTotalInteresIndividual.toFixed(2)}</td>
-                <td style = "text-align: right">$ ${totalesAcumuladoCuentaIndividual}</td>
+                <td style = "text-align: right" class="formato-monto">${totalContribucionesIndividual}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesCostoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesrendimientoOperador}</td>
+                <td style = "text-align: right" class="formato-monto">${sumaTotalInteresIndividual}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesAcumuladoCuentaIndividual}</td>
             </tr>`;
     document.getElementById('tablaIndividualTotales').innerHTML = filaTotalesIndividual;
 
@@ -397,7 +398,7 @@ const generarTablaIndividual = () => {
 }
 
 const generarCeldaAnual = (i, valor, decimales = 2) =>
-    (i % 12 === 1) ? `<td style="text-align: center" rowspan="12">${valor.toFixed(decimales)}</td>` : "";
+    (i % 12 === 1) ? `<td style="text-align: center" rowspan="12" class="formato-monto">${valor.toFixed(decimales)}</td>` : "";
 
 const generarTablaGrupal = () => {
     let filasGrupal = "";
@@ -411,15 +412,15 @@ const generarTablaGrupal = () => {
 
     let porcentajeCostoTotal = document.getElementById("porcentajeCostoTotal");
     const costoOperacionTotal = parseFloat(porcentajeCostoTotal.value) / 100;
-    
+
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
-    const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(/\./g, '').replace(',', '.'));
+    const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(',', '.'));
     const rendimientoOperadorTotal = porcentajeRendimientoOperadorNumero / 100.00;
 
-    const contribucionTotalMesGrupalNumero = Number(contribucionTotalMesGrupal.value.replace(/\./g, '').replace(',', '.'));
+    const contribucionTotalMesGrupalNumero = Number(contribucionTotalMesGrupal.value.replace(',', '.'));
 
     let costoOperacion = Number(costoOperacionTotal) * Number(contribucionTotalMesGrupalNumero);
-    let rendimientoOperador = rendimientoOperadorTotal * Number(contribucionTotalMesGrupalNumero);
+    let rendimientoOperador = parseFloat(rendimientoOperadorTotal) * parseFloat(contribucionTotalMesGrupalNumero);
 
     for (let i = 1; i <= periodoContribucion.value; i++) {
         edadActual = Math.floor(Number(edadInicial.value) + ((i - 1) / 12));
@@ -446,7 +447,7 @@ const generarTablaGrupal = () => {
         }
 
         const columnaVacia = (i === 1)
-            ? `<td style="text-align: center" rowspan="${periodoContribucion.value}"></td>`
+            ? `<td style="text-align: center" rowspan="${periodoContribucion.value}" class="formato-monto"></td>`
             : "";
 
         const anioCalculo = (i % 12 === 1)
@@ -459,25 +460,25 @@ const generarTablaGrupal = () => {
 
         sumaInteresesGrupal += interes;
         const interesTotales = (i % 12 === 1)
-            ? `<td style="text-align: center" rowspan="12" id="valAnioGrupal${(edadActual + 1) - edadInicial.value}">0</td>`
+            ? `<td style="text-align: center" rowspan="12" id="valAnioGrupal${(edadActual + 1) - edadInicial.value}" class="formato-monto">0</td>`
             : "";
 
         if (i % 12 === 0) {
             interesPorAnioGrupal.set(`valAnioGrupal${(edadActual + 1) - edadInicial.value}`, sumaInteresesGrupal);
             sumaInteresesGrupal = 0;
         }
-
+        
         filasGrupal += `
             <tr>
                 <td style = "text-align: center">${i}</td>
                 ${filaEdad}
-                <td style = "text-align: right">${contribucionTotalMesGrupal.value}</td>
-                <td style = "text-align: right">${contribucionAcumulada}</td>
-                <td style = "text-align: right">${costoOperacion.toFixed(2)}</td>
-                <td style = "text-align: right">${rendimientoOperador.toFixed(2)}</td>
-                <td style = "text-align: right">${c0.toFixed(2)}</td>
-                <td style = "text-align: right">${cf.toFixed(2)}</td>
-                <td style = "text-align: right">${interes.toFixed(2)}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionTotalMesGrupal.value}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionAcumulada}</td>
+                <td style = "text-align: right" class="formato-monto">${costoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${rendimientoOperador}</td>
+                <td style = "text-align: right" class="formato-monto">${c0}</td>
+                <td style = "text-align: right" class="formato-monto">${cf}</td>
+                <td style = "text-align: right" class="formato-monto">${interes}</td>
                 ${columnaVacia}
                 ${anioCalculo}
                 ${contribucionTotales}
@@ -511,11 +512,11 @@ const generarTablaGrupal = () => {
     filaTotalesGrupal += `
             <tr>
                 <td style = "text-align: center">Totales</td>
-                <td style = "text-align: right">$ ${totalContribucionesGrupal}</td>
-                <td style = "text-align: right">$ ${totalesCostoOperacion}</td>
-                <td style = "text-align: right">$ ${totalesrendimientoOperador}</td>
-                <td style = "text-align: right">$ ${sumaTotalInteresGrupal.toFixed(2)}</td>
-                <td style = "text-align: right">$ ${totalesAcumuladoCuentaGrupal}</td>
+                <td style = "text-align: right" class="formato-monto">${totalContribucionesGrupal}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesCostoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesrendimientoOperador}</td>
+                <td style = "text-align: right" class="formato-monto">${sumaTotalInteresGrupal.toFixed(2)}</td>
+                <td style = "text-align: right" class="formato-monto">${totalesAcumuladoCuentaGrupal}</td>
             </tr>`;
     document.getElementById('tablaGrupalTotales').innerHTML = filaTotalesGrupal;
 
@@ -572,7 +573,7 @@ const inicializarPromocionIndividual = (parametrosPromocion) => {
     contribucionTotalPromocionalIndividual.value = parametrosPromocion.totalContribucionesIndividual;
 
     const rendimientoPromocionalIndividual = document.getElementById("rendimientoPromocionalIndividual");
-    rendimientoPromocionalIndividual.value = parametrosPromocion.totalesrendimientoOperador;
+    rendimientoPromocionalIndividual.value = parametrosPromocion.totalesrendimientoOperador.toFixed(2);
 
     const acumuladoEnCuentaPromocionalIndividual = document.getElementById("acumuladoEnCuentaPromocionalIndividual");
     acumuladoEnCuentaPromocionalIndividual.value = parametrosPromocion.totalesAcumuladoCuentaIndividual;
@@ -581,7 +582,7 @@ const inicializarPromocionIndividual = (parametrosPromocion) => {
     totalRedBeneficiosPromocionalIndividualCopia.value = totalRedBeneficiosIndividual.value;
 
     const rendimientoTotalClientePromocionalIndividual = document.getElementById("rendimientoTotalClientePromocionalIndividual");
-    rendimientoTotalClientePromocionalIndividual.value = Number(totalRedBeneficiosIndividual.value) + Number(acumuladoEnCuentaPromocionalIndividual.value);
+    rendimientoTotalClientePromocionalIndividual.value = (Number(totalRedBeneficiosIndividual.value) + Number(acumuladoEnCuentaPromocionalIndividual.value)).toFixed(2);
 
 }
 
@@ -635,7 +636,7 @@ const inicializarPromocionGrupal = (parametrosPromocion) => {
     fechaInicioPromocionalGrupal.value = fechaInicio.value;
 
     const rendimientoPromocionalGrupal = document.getElementById("rendimientoPromocionalGrupal");
-    rendimientoPromocionalGrupal.value = parametrosPromocion.totalesrendimientoOperador;
+    rendimientoPromocionalGrupal.value = parametrosPromocion.totalesrendimientoOperador.toFixed(2);
 
     const totalRedBeneficiosGrupoGrupal = document.getElementById("totalRedBeneficiosGrupoGrupal");
     totalRedBeneficiosGrupoGrupal.value = Number(totalRedBeneficiosGrupal.value) * parametrosPromocion.numeroContribuyentes;
@@ -653,5 +654,20 @@ const inicializarPromocionGrupal = (parametrosPromocion) => {
     acumuladoEnCuentaPromocionalGrupal.value = parametrosPromocion.totalesAcumuladoCuentaGrupal;
 
     const rendimientoTotalClientePromocionalGrupal = document.getElementById("rendimientoTotalClientePromocionalGrupal");
-    rendimientoTotalClientePromocionalGrupal.value = Number(totalRedBeneficiosPromocionalGrupalCopia.value) + Number(acumuladoEnCuentaPromocionalGrupal.value);
+    rendimientoTotalClientePromocionalGrupal.value = (Number(totalRedBeneficiosPromocionalGrupalCopia.value) + Number(acumuladoEnCuentaPromocionalGrupal.value)).toFixed(2);
+}
+
+const formatoNumerico = () => {
+    let celdas = document.querySelectorAll(".formato-monto");
+
+    celdas.forEach(td => {
+        let numero = parseFloat(td.innerText.replace(",", "."));
+        
+        if (!isNaN(numero)) {
+            td.innerText = "$ " + new Intl.NumberFormat("es-ES", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(numero);
+        }
+    });
 }
