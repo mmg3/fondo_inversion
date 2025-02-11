@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     buttons.forEach(button => {
         button.addEventListener('click', function () {
-            
+
             buttons.forEach(b => b.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.querySelectorAll("input, textarea").forEach(element => {
-        element.addEventListener("focus", function() {
+        element.addEventListener("focus", function () {
             this.select();
         });
     });
@@ -316,7 +316,7 @@ const generarTablaIndividual = () => {
         if (i === 1) {
             contribucionAcumulada = (parseFloat(montoContribucion.value) + parseFloat(pagoInicial.value)).toFixed(2);
         }
-        
+
         let c0 = contribucionAcumulada - costoOperacion - rendimientoOperador;
         let cf = c0 * (1 + (tasaNominalAnual.value / 100)) ** (1 / 12);
         let interes = cf - c0;
@@ -379,7 +379,7 @@ const generarTablaIndividual = () => {
         sumaTotalInteresIndividual += valor;
     });
 
-    const totalContribucionesIndividual = (Number(montoContribucion.value) * Number(periodoContribucion.value)).toFixed(2);
+    const totalContribucionesIndividual = ((Number(montoContribucion.value) * Number(periodoContribucion.value)) + parseFloat(pagoInicial.value)).toFixed(2);
     const totalesCostoOperacion = (Number(costoOperacion) * Number(periodoContribucion.value)).toFixed(2);
     const totalesrendimientoOperador = (Number(rendimientoOperador) * Number(periodoContribucion.value)).toFixed(2);
     const totalesAcumuladoCuentaIndividual = (Number(totalContribucionesIndividual) - Number(totalesCostoOperacion) - Number(totalesrendimientoOperador) + Number(sumaTotalInteresIndividual)).toFixed(2);
@@ -473,7 +473,7 @@ const generarTablaGrupal = () => {
             interesPorAnioGrupal.set(`valAnioGrupal${(edadActual + 1) - edadInicial.value}`, sumaInteresesGrupal);
             sumaInteresesGrupal = 0;
         }
-        
+
         filasGrupal += `
             <tr>
                 <td style = "text-align: center">${i}</td>
@@ -668,7 +668,7 @@ const formatoNumerico = () => {
 
     celdas.forEach(td => {
         let numero = parseFloat(td.innerText.replace(",", "."));
-        
+
         if (!isNaN(numero)) {
             td.innerText = new Intl.NumberFormat("es-ES", {
                 minimumFractionDigits: 2,
