@@ -112,7 +112,7 @@ const recalcularRendimientoOperador = () => {
     decimalesYFormato();
 }
 
-const calcularValor = (input) => {
+const recalcularCostosOperacion = (input) => {
     let contribucionTotal = document.getElementById("contribucionTotal");
 
     const contribucionTotalNumero = Number(contribucionTotal.value.replace(/\./g, '').replace(',', '.'));
