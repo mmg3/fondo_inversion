@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +31,9 @@
         <li class="nav-item">
             <a class="nav-link" id="tabPromocional" data-target="sectionPromocional" aria-current="page" href="#">TABLA
                 PROMOCIONAL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tabResumen" data-target="sectionResumen" aria-current="page" href="#">RESUMEN</a>
         </li>
     </ul>
     <section id="sectionDatos" class="container-fluid mt-5 tab-content active">
@@ -154,7 +156,7 @@
             </div>
     </section>
 
-    <div id="sectionIndividual" class="container mt-5 tab-content">
+    <section id="sectionIndividual" class="container mt-5 tab-content">
         <div class="row">
             <div class="text-white p-3 box w-50 mb-3">
                 <div class="row align-items-center mb-3">
@@ -275,9 +277,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </section>
 
-    <div id="sectionGrupal" class="container-fluid mt-5 tab-content">
+    <section id="sectionGrupal" class="container-fluid mt-5 tab-content">
         <div class="row">
             <div class="text-white p-3 box w-40 mb-3">
                 <div class="row align-items-center mb-3">
@@ -397,9 +399,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </section>
 
-    <div id="sectionPromocional" class="container-fluid mt-5 tab-content">
+    <section id="sectionPromocional" class="container-fluid mt-5 tab-content">
         <div class="row mb-3">
             <div class="col-6">
                 <h2 class="section-title">Red de Beneficios</h2>
@@ -645,7 +647,91 @@
                 </table>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="sectionResumen" class="container-fluid mt-5 tab-content">
+        <h3 class="text-center">COTIZACIÓN</h3>
+        <p><strong>Fecha de Cotización:</strong> 21/2/2025</p>
+
+        <div class="border p-3 bg-primary text-white">DECLARACIONES Y AUTORIZACIONES</div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>Nombre del cliente</strong><br><input type="text" id="nombreCliente"
+                        class="form-control"></td>
+                    <td><strong>Teléfono/Celular</strong><br><input type="text" id="telefonoCliente"
+                        class="form-control text-end"></td>
+                </tr>
+                <tr>
+                    <td><strong>Fecha de nacimiento</strong><br><input type="text" id="fechaNacimientoCliente"
+                        class="form-control text-end"></td>
+                    <td><strong>Correo electrónico</strong><br><input type="email" id="emailCliente"
+                        class="form-control"></td>
+                </tr>
+                <tr>
+                    <td><strong>Género</strong><br><select>
+                        <option value="POR DEFINIR" selected>POR DEFINIR</option>
+                        <option value="MUJER">MUJER</option>
+                        <option value="HOMBRE">HOMBRE</option>
+                    </select></td>
+                    <td><strong>Condición fumador</strong><br><select>
+                        <option value="NO FUMADOR" selected>NO FUMADOR</option>
+                        <option value="FUMADOR">FUMADOR</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Propuesta válida a</strong> 15 días</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="border p-3 bg-primary text-white">COBERTURA DEL PRODUCTO</div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>Cobertura principal</strong><br><input type="text" id="coberturaPrincipal" value="Muerte por cualquier causa"
+                        class="form-control"></td>
+                    <td><strong>Monto</strong><br><input type="text" id="montoPrincipalResumen" value="150000.00"
+                        class="form-control text-end input-decimal"></td>
+                </tr>
+                <tr>
+                    <td><strong>Cobertura adicional</strong><br><input type="text" id="coberturaAdicional" value="Enfermedad Terminal"
+                        class="form-control"></td>
+                    <td><strong>Monto</strong><br><input type="text" id="montoAdicionalResumen" value="75000.00"
+                        class="form-control text-end input-decimal"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="border p-3 bg-primary text-white">APORTE</div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>Frecuencia</strong><br>Mensual</td>
+                    <td><strong>Cuota</strong><br><input type="text" id="cuotaFrecuenciaMensual" value="89.38"
+                        class="form-control text-end input-decimal"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="border p-3 bg-primary text-white">AHORRO</div>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>20 años de aporte</th>
+                    <th>A los 70 años de edad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" id="valorAniosAporte" value="19016.06"
+                        class="form-control text-end input-decimal"></td>
+                    <td><input type="text" id="valorEdadAporte" value="39095.52"
+                        class="form-control text-end input-decimal"></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
     <script src="./js/bootstrap.bundle.min.js"></script>
 
@@ -655,6 +741,10 @@
     <script src="./js/scripts.js"></script>
     <script>
         flatpickr("#fechaInicio", {
+            dateFormat: "d/m/Y",
+            locale: "es"
+        });
+        flatpickr("#fechaNacimientoCliente", {
             dateFormat: "d/m/Y",
             locale: "es"
         });
