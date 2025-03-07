@@ -151,6 +151,9 @@ const actualizarTotales = () => {
 
     generarTablaIndividual();
     generarTablaGrupal();
+
+    copiarResultadosResumen();
+
     decimalesYFormato();
     formatoNumerico();
 }
@@ -676,4 +679,22 @@ const formatoNumerico = () => {
             }).format(numero);
         }
     });
+}
+
+const copiarResultadosResumen = () => {
+    const contribucionTotalMesIndividual = document.getElementById("contribucionTotalMesIndividual");
+    const cuotaFrecuenciaMensualResumen = document.getElementById("cuotaFrecuenciaMensualResumen");
+    cuotaFrecuenciaMensualResumen.value = contribucionTotalMesIndividual.value;
+
+    const valorAnualAporteReporte = cuotaFrecuenciaMensualResumen.value * 12;
+    
+    const valorAniosAporteReporte = document.getElementById("valorAniosAporteReporte");
+    valorAniosAporteReporte.value = valorAnualAporteReporte * 20;
+    
+    const valorEdadAporteReporte = document.getElementById("valorEdadAporteReporte");
+    valorEdadAporteReporte.value = valorAnualAporteReporte * 70;
+
+    const valorCostoTotal = document.getElementById("valorCostoTotal");
+    const montoPrincipalResumen = document.getElementById("montoPrincipalResumen");
+    montoPrincipalResumen.value = valorCostoTotal.value;
 }

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="GRUPO CONFIA">
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/flatpickr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/local.css">
@@ -685,19 +687,13 @@
             </tbody>
         </table>
 
-        <div class="border p-3 bg-primary text-white">COBERTURA DEL PRODUCTO</div>
+        <div class="border p-3 bg-primary text-white">COSTOS DEL PRODUCTO</div>
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td><strong>Cobertura principal</strong><br><input type="text" id="coberturaPrincipal" value="Muerte por cualquier causa"
+                    <td><strong>Costos Operación</strong><br><input type="text" value="Totales"
                         class="form-control"></td>
                     <td><strong>Monto</strong><br><input type="text" id="montoPrincipalResumen" value="150000.00"
-                        class="form-control text-end input-decimal"></td>
-                </tr>
-                <tr>
-                    <td><strong>Cobertura adicional</strong><br><input type="text" id="coberturaAdicional" value="Enfermedad Terminal"
-                        class="form-control"></td>
-                    <td><strong>Monto</strong><br><input type="text" id="montoAdicionalResumen" value="75000.00"
                         class="form-control text-end input-decimal"></td>
                 </tr>
             </tbody>
@@ -708,8 +704,8 @@
             <tbody>
                 <tr>
                     <td><strong>Frecuencia</strong><br>Mensual</td>
-                    <td><strong>Cuota</strong><br><input type="text" id="cuotaFrecuenciaMensual" value="89.38"
-                        class="form-control text-end input-decimal"></td>
+                    <td><strong>Cuota</strong><br><input type="text" id="cuotaFrecuenciaMensualResumen" value="89.38"
+                        class="form-control text-end input-decimal" readonly></td>
                 </tr>
             </tbody>
         </table>
@@ -724,10 +720,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input type="text" id="valorAniosAporte" value="19016.06"
-                        class="form-control text-end input-decimal"></td>
-                    <td><input type="text" id="valorEdadAporte" value="39095.52"
-                        class="form-control text-end input-decimal"></td>
+                    <td><input type="text" id="valorAniosAporteReporte" value="19016.06"
+                        class="form-control text-end input-decimal" readonly></td>
+                    <td><input type="text" id="valorEdadAporteReporte" value="39095.52"
+                        class="form-control text-end input-decimal" readonly></td>
                 </tr>
             </tbody>
         </table>
