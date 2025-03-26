@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let edadInicial = document.getElementById("edadInicial");
     edadInicial.value = 35;
 
+    let contribucionTotal = document.getElementById("contribucionTotal");
+    contribucionTotal.value = 50000;
+
     calcularClick();
 
     decimalesYFormato();
@@ -66,16 +69,16 @@ const calcularClick = () => {
     let contribucionMensual = document.getElementById("contribucionMensual");
     contribucionMensual.value = montoContribucion.value * numeroContribuyentes.value;
 
-    let contribucionTotal = document.getElementById("contribucionTotal");
-    contribucionTotal.value = ((montoContribucion.value * periodoContribucion.value) + Number(pagoInicial.value)) * numeroContribuyentes.value;
-
     let edadFinal = document.getElementById("edadFinal");
     edadFinal.value = Number(edadInicial.value) + (periodoContribucion.value / 12);
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
     porcentajeCosto1.value = 1.20;
     let valorCosto1 = document.getElementById("valorCosto1");
-    valorCosto1.value = (porcentajeCosto1.value / 100) * contribucionTotal.value;
+
+    const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
+
+    valorCosto1.value = (porcentajeCosto1.value / 100) * contribucionTotalNumber;
 
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
     porcentajeRendimientoOperador.value = 0.50;
@@ -307,6 +310,9 @@ const generarTablaIndividual = () => {
     let costoOperacion = Number(costoOperacionTotal) * Number(montoContribucion.value);
     let rendimientoOperador = rendimientoOperadorTotal * parseFloat(montoContribucion.value);
 
+    const contribucionTotal = document.getElementById("contribucionTotal");
+    const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
+
     for (let i = 1; i <= periodoContribucion.value; i++) {
         edadActual = Math.floor(Number(edadInicial.value) + ((i - 1) / 12));
 
@@ -364,6 +370,7 @@ const generarTablaIndividual = () => {
                 <td style = "text-align: right" class="formato-monto">${c0}</td>
                 <td style = "text-align: right" class="formato-monto">${cf}</td>
                 <td style = "text-align: right" class="formato-monto">${interes}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionTotalNumber + cf}</td>
                 ${columnaVacia}
                 ${anioCalculo}
                 ${contribucionTotales}
