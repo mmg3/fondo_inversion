@@ -52,6 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let contribucionTotal = document.getElementById("contribucionTotal");
     contribucionTotal.value = 50000;
 
+    let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
+    porcentajeCosto1.value = 1.20;
+
+    let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
+    porcentajeRendimientoOperador.value = 0.50;
+
     calcularClick();
 
     decimalesYFormato();
@@ -69,20 +75,21 @@ const calcularClick = () => {
     let contribucionMensual = document.getElementById("contribucionMensual");
     contribucionMensual.value = montoContribucion.value * numeroContribuyentes.value;
 
+    let contribucionTotal = document.getElementById("contribucionTotal");
+    contribucionTotal.value = ((montoContribucion.value * periodoContribucion.value) + Number(pagoInicial.value)) * numeroContribuyentes.value;
+
     let edadFinal = document.getElementById("edadFinal");
     edadFinal.value = Number(edadInicial.value) + (periodoContribucion.value / 12);
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
-    porcentajeCosto1.value = 1.20;
+    const porcentajeCosto1Number = parseFloat(porcentajeCosto1.value.replace('.','').replace(',','.'));
+
     let valorCosto1 = document.getElementById("valorCosto1");
 
     const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
 
-    valorCosto1.value = (porcentajeCosto1.value / 100) * contribucionTotalNumber;
-
-    let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
-    porcentajeRendimientoOperador.value = 0.50;
-
+    valorCosto1.value = (porcentajeCosto1Number / 100) * contribucionTotalNumber;
+    
     actualizarTotales();
 }
 
@@ -307,12 +314,16 @@ const generarTablaIndividual = () => {
     const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(',', '.'));
     const rendimientoOperadorTotal = porcentajeRendimientoOperadorNumero / 100.00;
 
-    let costoOperacion = Number(costoOperacionTotal) * Number(montoContribucion.value);
     let rendimientoOperador = rendimientoOperadorTotal * parseFloat(montoContribucion.value);
-
+    
     const contribucionTotal = document.getElementById("contribucionTotal");
     const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
-
+    
+    let costoOperacion = (Number(rendimientoOperadorTotal) * Number(contribucionTotalNumber)) / 12;
+    
+    const totalContribucionesIndividual = ((Number(montoContribucion.value) * Number(periodoContribucion.value)) + parseFloat(pagoInicial.value)).toFixed(2);
+    const totalContribucionesIndividualNumber = parseFloat(totalContribucionesIndividual.replace(',','.'));
+    
     for (let i = 1; i <= periodoContribucion.value; i++) {
         edadActual = Math.floor(Number(edadInicial.value) + ((i - 1) / 12));
 
@@ -358,7 +369,7 @@ const generarTablaIndividual = () => {
             interesPorAnioIndividual.set(`valAnio${(edadActual + 1) - edadInicial.value}`, sumaInteresesIndividual);
             sumaInteresesIndividual = 0;
         }
-
+        
         filasIndividual += `
             <tr>
                 <td style = "text-align: center">${i}</td>
@@ -370,7 +381,7 @@ const generarTablaIndividual = () => {
                 <td style = "text-align: right" class="formato-monto">${c0}</td>
                 <td style = "text-align: right" class="formato-monto">${cf}</td>
                 <td style = "text-align: right" class="formato-monto">${interes}</td>
-                <td style = "text-align: right" class="formato-monto">${contribucionTotalNumber + cf}</td>
+                <td style = "text-align: right" class="formato-monto">${totalContribucionesIndividualNumber + cf}</td>
                 ${columnaVacia}
                 ${anioCalculo}
                 ${contribucionTotales}
@@ -389,7 +400,7 @@ const generarTablaIndividual = () => {
         sumaTotalInteresIndividual += valor;
     });
 
-    const totalContribucionesIndividual = ((Number(montoContribucion.value) * Number(periodoContribucion.value)) + parseFloat(pagoInicial.value)).toFixed(2);
+    
     const totalesCostoOperacion = (Number(costoOperacion) * Number(periodoContribucion.value)).toFixed(2);
     const totalesrendimientoOperador = (Number(rendimientoOperador) * Number(periodoContribucion.value)).toFixed(2);
     const totalesAcumuladoCuentaIndividual = (Number(totalContribucionesIndividual) - Number(totalesCostoOperacion) - Number(totalesrendimientoOperador) + Number(sumaTotalInteresIndividual)).toFixed(2);
@@ -429,15 +440,19 @@ const generarTablaGrupal = () => {
     let porcentajeCostoTotal = document.getElementById("porcentajeCostoTotal");
     const costoOperacionTotal = parseFloat(porcentajeCostoTotal.value) / 100;
 
+    const contribucionTotal = document.getElementById("contribucionTotal");
+    const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
+
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
     const porcentajeRendimientoOperadorNumero = Number(porcentajeRendimientoOperador.value.replace(',', '.'));
     const rendimientoOperadorTotal = porcentajeRendimientoOperadorNumero / 100.00;
 
     const contribucionTotalMesGrupalNumero = Number(contribucionTotalMesGrupal.value.replace(',', '.'));
 
-    let costoOperacion = Number(costoOperacionTotal) * Number(contribucionTotalMesGrupalNumero);
+    let costoOperacion = (Number(rendimientoOperadorTotal) * Number(contribucionTotalNumber))/12;
     let rendimientoOperador = parseFloat(rendimientoOperadorTotal) * parseFloat(contribucionTotalMesGrupalNumero);
-
+    const totalContribucionesGrupal = (Number(contribucionTotalMesGrupalNumero) * Number(periodoContribucion.value)).toFixed(2);
+    
     for (let i = 1; i <= periodoContribucion.value; i++) {
         edadActual = Math.floor(Number(edadInicial.value) + ((i - 1) / 12));
 
@@ -495,6 +510,7 @@ const generarTablaGrupal = () => {
                 <td style = "text-align: right" class="formato-monto">${c0}</td>
                 <td style = "text-align: right" class="formato-monto">${cf}</td>
                 <td style = "text-align: right" class="formato-monto">${interes}</td>
+                <td style = "text-align: right" class="formato-monto">${contribucionTotalNumber + cf}</td>
                 ${columnaVacia}
                 ${anioCalculo}
                 ${contribucionTotales}
@@ -513,7 +529,6 @@ const generarTablaGrupal = () => {
         sumaTotalInteresGrupal += valor;
     });
 
-    const totalContribucionesGrupal = (Number(contribucionTotalMesGrupalNumero) * Number(periodoContribucion.value)).toFixed(2);
     const totalesCostoOperacion = (Number(costoOperacion) * Number(periodoContribucion.value)).toFixed(2);
     const totalesrendimientoOperador = (Number(rendimientoOperador) * Number(periodoContribucion.value)).toFixed(2);
     const totalesAcumuladoCuentaGrupal = (Number(totalContribucionesGrupal) - Number(totalesCostoOperacion) - Number(totalesrendimientoOperador) + Number(sumaTotalInteresGrupal)).toFixed(2);
