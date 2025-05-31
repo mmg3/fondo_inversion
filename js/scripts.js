@@ -35,28 +35,28 @@ document.addEventListener('DOMContentLoaded', function () {
     fechaInicio.value = fechaFormateada;
 
     let montoContribucion = document.getElementById("montoContribucion");
-    montoContribucion.value = 200;
+    montoContribucion.value = 250;
 
     let pagoInicial = document.getElementById("pagoInicial");
     pagoInicial.value = 0;
 
     let numeroContribuyentes = document.getElementById("numeroContribuyentes");
-    numeroContribuyentes.value = 5000;
+    numeroContribuyentes.value = 1;
 
     let tasaNominalAnual = document.getElementById("tasaNominalAnual");
-    tasaNominalAnual.value = 2;
+    tasaNominalAnual.value = 5;
 
     let edadInicial = document.getElementById("edadInicial");
-    edadInicial.value = 35;
+    edadInicial.value = 40;
 
     let contribucionTotal = document.getElementById("contribucionTotal");
     contribucionTotal.value = 50000;
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
-    porcentajeCosto1.value = 1.20;
+    porcentajeCosto1.value = 0.8;
 
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
-    porcentajeRendimientoOperador.value = 0.50;
+    porcentajeRendimientoOperador.value = 0.80;
 
     calcularClick();
 
@@ -82,10 +82,9 @@ const calcularClick = () => {
     edadFinal.value = Number(edadInicial.value) + (periodoContribucion.value / 12);
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
-    const porcentajeCosto1Number = parseFloat(porcentajeCosto1.value.replace('.','').replace(',','.'));
+    const porcentajeCosto1Number = parseFloat(porcentajeCosto1.value.replace(',','.'));
 
     let valorCosto1 = document.getElementById("valorCosto1");
-
     const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
 
     valorCosto1.value = (porcentajeCosto1Number / 100) * contribucionTotalNumber;
@@ -110,11 +109,15 @@ const agregarFila = (nombreTabla) => {
     let nuevaFila = document.createElement("tr");
     nuevaFila.innerHTML = `
                 <td><input type="text" class="form-control input-text formato-monto" value="Nombre Costo"></td>
-                <td><input type="number" class="form-control input-decimal text-end porcentaje formato-monto" onblur="calcularValor(this)"></td>
+                <td><input type="number" class="form-control input-decimal text-end porcentaje formato-monto" onblur="recalcularCostosOperacion(this)"></td>
                 <td><input type="text" class="form-control input-decimal text-end valorTotal formato-monto" readonly></td>
             `;
 
     tbody.appendChild(nuevaFila);
+}
+const calcularValor = (input) => {
+    const porcentaje = parseFloat(input.value) || 0;
+
 }
 
 const recalcularRendimientoOperador = () => {
@@ -126,13 +129,14 @@ const recalcularCostosOperacion = (input) => {
     let contribucionTotal = document.getElementById("contribucionTotal");
 
     const contribucionTotalNumero = Number(contribucionTotal.value.replace(/\./g, '').replace(',', '.'));
-    let porcentaje = parseFloat(input.value) || 0;
+    const inputNumber = input.value.replace(',', '.');
+
+    let porcentaje = parseFloat(inputNumber) || 0;
     let baseTotal = parseFloat(contribucionTotalNumero);
     let valorTotal = (baseTotal * (porcentaje / 100.00)).toFixed(2);
 
     let fila = input.closest("tr");
     let inputValorTotal = fila.querySelector(".valorTotal");
-
     inputValorTotal.value = parseFloat(valorTotal);
     actualizarTotales();
     decimalesYFormato();
@@ -144,7 +148,7 @@ const actualizarTotales = () => {
 
     // Sumar todos los valores de porcentaje
     document.querySelectorAll(".porcentaje").forEach(input => {
-        totalPorcentaje += parseFloat(input.value) || 0;
+        totalPorcentaje += parseFloat(input.value.replace(',', '.')) || 0;
     });
 
     // Sumar todos los valores de "Valor Total"
@@ -153,7 +157,7 @@ const actualizarTotales = () => {
     });
 
     // Actualizar los valores en la fila "Totales"
-    document.getElementById("porcentajeCostoTotal").value = totalPorcentaje.toFixed(2) + "%";
+    document.getElementById("porcentajeCostoTotal").value = totalPorcentaje.toFixed(2);
     document.getElementById("valorCostoTotal").value = totalValor.toFixed(2);
 
     copiarInfoIndividual();
@@ -316,10 +320,12 @@ const generarTablaIndividual = () => {
 
     let rendimientoOperador = rendimientoOperadorTotal * parseFloat(montoContribucion.value);
     
+    const numeroContribuyentes = document.getElementById("numeroContribuyentes");
+    const numeroContribuyentesNumber = parseFloat(numeroContribuyentes.value.replace('.','').replace(',','.'));
     const contribucionTotal = document.getElementById("contribucionTotal");
-    const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'));
+    const contribucionTotalNumber = parseFloat(contribucionTotal.value.replace('.','').replace(',','.'))/numeroContribuyentesNumber;
     
-    let costoOperacion = (Number(rendimientoOperadorTotal) * Number(contribucionTotalNumber)) / 12;
+    let costoOperacion = (Number(costoOperacionTotal) * Number(contribucionTotalNumber)) / 12;
     
     const totalContribucionesIndividual = ((Number(montoContribucion.value) * Number(periodoContribucion.value)) + parseFloat(pagoInicial.value)).toFixed(2);
     const totalContribucionesIndividualNumber = parseFloat(totalContribucionesIndividual.replace(',','.'));
@@ -356,7 +362,7 @@ const generarTablaIndividual = () => {
             ? `<td style="text-align: center" rowspan="12">${(edadActual + 1) - edadInicial.value}</td>`
             : "";
 
-        const contribucionTotales = generarCeldaAnual(i, montoContribucion.value * 12);
+        const contribucionTotales = generarCeldaAnual(i, montoContribucion.value * 12 * ((edadActual + 1) - edadInicial.value));
         const costoOperacionTotales = generarCeldaAnual(i, costoOperacion * 12);
         const rendimientoOperadorTotales = generarCeldaAnual(i, rendimientoOperador * 12);
 
@@ -449,7 +455,7 @@ const generarTablaGrupal = () => {
 
     const contribucionTotalMesGrupalNumero = Number(contribucionTotalMesGrupal.value.replace(',', '.'));
 
-    let costoOperacion = (Number(rendimientoOperadorTotal) * Number(contribucionTotalNumber))/12;
+    let costoOperacion = (Number(costoOperacionTotal) * Number(contribucionTotalNumber))/12;
     let rendimientoOperador = parseFloat(rendimientoOperadorTotal) * parseFloat(contribucionTotalMesGrupalNumero);
     const totalContribucionesGrupal = (Number(contribucionTotalMesGrupalNumero) * Number(periodoContribucion.value)).toFixed(2);
     
@@ -485,7 +491,7 @@ const generarTablaGrupal = () => {
             ? `<td style="text-align: center" rowspan="12">${(edadActual + 1) - edadInicial.value}</td>`
             : "";
 
-        const contribucionTotales = generarCeldaAnual(i, contribucionTotalMesGrupalNumero * 12);
+        const contribucionTotales = generarCeldaAnual(i, contribucionTotalMesGrupalNumero * 12 * ((edadActual + 1) - edadInicial.value));
         const costoOperacionTotales = generarCeldaAnual(i, costoOperacion * 12);
         const rendimientoOperadorTotales = generarCeldaAnual(i, rendimientoOperador * 12);
 
