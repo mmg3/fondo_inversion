@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     contribucionTotal.value = 50000;
 
     let porcentajeCosto1 = document.getElementById("porcentajeCosto1");
-    porcentajeCosto1.value = 0.8;
+    porcentajeCosto1.value = 0.88888;
 
     let porcentajeRendimientoOperador = document.getElementById("porcentajeRendimientoOperador");
     porcentajeRendimientoOperador.value = 0.80;
@@ -289,7 +289,7 @@ const decimalesYFormato = () => {
                 if (input.type === 'text') {
                     input.value = Number(numero).toLocaleString('es-ES', {
                         minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        maximumFractionDigits: 6
                     });
                 }
             }
@@ -376,13 +376,15 @@ const generarTablaIndividual = () => {
             sumaInteresesIndividual = 0;
         }
         
+        var costoOperacionTotalIndividual = document.getElementById("valorCostoTotal").value/numeroContribuyentesNumber;
+
         filasIndividual += `
             <tr>
                 <td style = "text-align: center">${i}</td>
                 ${filaEdad}
                 <td style = "text-align: right" class="formato-monto">${contribucionTotalMesIndividual.value}</td>
                 <td style = "text-align: right" class="formato-monto">${contribucionAcumulada}</td>
-                <td style = "text-align: right" class="formato-monto">${costoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${costoOperacionTotalIndividual}</td>
                 <td style = "text-align: right" class="formato-monto">${rendimientoOperador}</td>
                 <td style = "text-align: right" class="formato-monto">${c0}</td>
                 <td style = "text-align: right" class="formato-monto">${cf}</td>
@@ -505,13 +507,15 @@ const generarTablaGrupal = () => {
             sumaInteresesGrupal = 0;
         }
 
+        var costoOperacionTotalIndividual = document.getElementById("valorCostoTotal").value;
+
         filasGrupal += `
             <tr>
                 <td style = "text-align: center">${i}</td>
                 ${filaEdad}
                 <td style = "text-align: right" class="formato-monto">${contribucionTotalMesGrupal.value}</td>
                 <td style = "text-align: right" class="formato-monto">${contribucionAcumulada}</td>
-                <td style = "text-align: right" class="formato-monto">${costoOperacion}</td>
+                <td style = "text-align: right" class="formato-monto">${costoOperacionTotalIndividual}</td>
                 <td style = "text-align: right" class="formato-monto">${rendimientoOperador}</td>
                 <td style = "text-align: right" class="formato-monto">${c0}</td>
                 <td style = "text-align: right" class="formato-monto">${cf}</td>
